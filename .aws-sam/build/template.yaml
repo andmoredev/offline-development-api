@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'offline-development-api
+
+  '
+Globals:
+  Function:
+    Timeout: 60
+Resources:
+  GetAllItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetAllItemsFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        GetItem:
+          Type: Api
+          Properties:
+            Path: /items/
+            Method: get
+      Environment:
+        Variables:
+          USE_LOCAL_DYNAMODB: 'false'
+  GetItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetItemFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      Events:
+        GetItem:
+          Type: Api
+          Properties:
+            Path: /items/{itemId}
+            Method: get
+      Environment:
+        Variables:
+          USE_LOCAL_DYNAMODB: 'false'
